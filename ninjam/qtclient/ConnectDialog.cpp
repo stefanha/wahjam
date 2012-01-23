@@ -1,16 +1,18 @@
 #include <QLabel>
 #include <QFormLayout>
+#include <QSettings>
 
 #include "ConnectDialog.h"
 
 ConnectDialog::ConnectDialog(QWidget *parent)
   : QDialog(parent)
 {
-  hostEdit = new QLineEdit;
-  userEdit = new QLineEdit;
+  QSettings settings;
+
+  hostEdit = new QLineEdit(settings.value("connect/host").toString());
+  userEdit = new QLineEdit(settings.value("connect/user").toString());
   passEdit = new QLineEdit;
   passEdit->setEchoMode(QLineEdit::Password);
-  passEdit->setEnabled(false);
 
   connectButton = new QPushButton(tr("&Connect"));
 
@@ -23,7 +25,10 @@ ConnectDialog::ConnectDialog(QWidget *parent)
   formLayout->addRow(tr("&Username:"), userEdit);
 
   publicCheckbox = new QCheckBox(tr("&Public server"));
-  publicCheckbox->setChecked(true);
+  if (settings.value("connect/public", true).toBool()) {
+    publicCheckbox->setChecked(true);
+    passEdit->setEnabled(false);
+  }
   connect(publicCheckbox, SIGNAL(stateChanged(int)), this, SLOT(publicServerStateChanged(int)));
   formLayout->addWidget(publicCheckbox);
 
@@ -47,6 +52,11 @@ void ConnectDialog::connectToHost()
   passEdit->clear();
   passEdit->setEnabled(false);
   publicCheckbox->setChecked(true);
+
+  QSettings settings;
+  settings.setValue("connect/host", host);
+  settings.setValue("connect/user", user);
+  settings.setValue("connect/public", isPublicServer);
 
   accept();
 }
