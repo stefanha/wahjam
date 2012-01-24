@@ -5,6 +5,7 @@
 #include <QLineEdit>
 #include <QPushButton>
 #include <QCheckBox>
+#include <QComboBox>
 
 class ConnectDialog : public QDialog
 {
@@ -22,11 +23,12 @@ public slots:
   void publicServerStateChanged(int state);
 
 private:
-  QLineEdit *hostEdit;
+  QComboBox *hostEdit;
   QLineEdit *userEdit;
   QCheckBox *publicCheckbox;
   QLineEdit *passEdit;
   QPushButton *connectButton;
+  QStringList hosts;
   QString host;
   QString user;
   QString pass;

@@ -9,7 +9,15 @@ ConnectDialog::ConnectDialog(QWidget *parent)
 {
   QSettings settings;
 
-  hostEdit = new QLineEdit(settings.value("connect/host").toString());
+  hostEdit = new QComboBox;
+  hostEdit->setEditable(true);
+
+  hosts = settings.value("connect/hosts").toStringList();
+  QStringListIterator hostsIterator(hosts);
+  while (hostsIterator.hasNext()) {
+    hostEdit->addItem(hostsIterator.next());
+  }
+
   userEdit = new QLineEdit(settings.value("connect/user").toString());
   passEdit = new QLineEdit;
   passEdit->setEchoMode(QLineEdit::Password);
@@ -42,19 +50,17 @@ ConnectDialog::ConnectDialog(QWidget *parent)
 
 void ConnectDialog::connectToHost()
 {
-  host = hostEdit->text();
+  host = hostEdit->currentText();
   user = userEdit->text();
   pass = passEdit->text();
   isPublicServer = publicCheckbox->isChecked();
 
-  hostEdit->clear();
-  userEdit->clear();
-  passEdit->clear();
-  passEdit->setEnabled(false);
-  publicCheckbox->setChecked(true);
+  hosts.prepend(host);
+  hosts.removeDuplicates();
+  hosts = hosts.mid(0, 16); /* limit maximum number of elements */
 
   QSettings settings;
-  settings.setValue("connect/host", host);
+  settings.setValue("connect/hosts", hosts);
   settings.setValue("connect/user", user);
   settings.setValue("connect/public", isPublicServer);
 
