@@ -70,7 +70,7 @@ MainWindow::MainWindow(QWidget *parent)
   ConnectDialog connectDialog;
 
   if (connectDialog.exec() != QDialog::Accepted) {
-    return; /* TODO exit */
+    exit(0); /* TODO exit properly */
   }
 
   QString user = connectDialog.GetUser();
