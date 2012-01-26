@@ -2,6 +2,8 @@
 #include <QVBoxLayout>
 #include <QPushButton>
 #include <QSplitter>
+#include <QDateTime>
+#include <QDir>
 
 #include "MainWindow.h"
 #include "ClientRunThread.h"
@@ -124,8 +126,6 @@ MainWindow::~MainWindow()
 
 void MainWindow::Connect(const QString &host, const QString &user, const QString &pass)
 {
-  /* TODO set work dir */
-
   /* TODO replace with PortAudio */
 #if defined(_WIN32)
 #error
@@ -141,6 +141,11 @@ void MainWindow::Connect(const QString &host, const QString &user, const QString
     exit(1);
   }
 
+  if (!setupWorkDir()) {
+    chatAddLine("Unable to create work directory.", "");
+    return;
+  }
+
   client.Connect(host.toAscii().data(),
                  user.toUtf8().data(),
                  pass.toUtf8().data());
@@ -153,7 +158,14 @@ void MainWindow::Disconnect()
 
   clientMutex.lock();
   client.Disconnect();
+  QString workDirPath = QString::fromUtf8(client.GetWorkDir());
+  bool keepWorkDir = client.config_savelocalaudio;
+  client.SetWorkDir(NULL);
   clientMutex.unlock();
+
+  if (!workDirPath.isEmpty() && !keepWorkDir) {
+    cleanupWorkDir(workDirPath);
+  }
 }
 
 /* Must be called with client mutex held or before client thread is started */
@@ -167,6 +179,47 @@ void MainWindow::setupChannelTree()
 
     channelTree->addLocalChannel(ch, QString::fromUtf8(name), mute, broadcast);
   }
+}
+
+bool MainWindow::setupWorkDir()
+{
+  QDir basedir = QDir::current(); // TODO platform-specific and QSettings
+
+  /* Filename generation uses date/time plus a unique number, if necessary */
+  int i;
+  for (i = 0; i < 16; i++) {
+    QString filename(QDateTime::currentDateTime().toString("yyyyMMdd_hhmm"));
+    if (i > 0) {
+      filename += QString("_%1").arg(i);
+    }
+    filename += ".wahjam";
+
+    if (basedir.mkdir(filename)) {
+      client.SetWorkDir(basedir.filePath(filename).toUtf8().data());
+      return true;
+    }
+  }
+  return false;
+}
+
+void MainWindow::cleanupWorkDir(const QString &path)
+{
+  QDir workDir(path);
+
+  foreach (const QFileInfo &subdirInfo,
+           workDir.entryInfoList(QDir::NoDotAndDotDot | QDir::Dirs)) {
+    QDir subdir(subdirInfo.absoluteDir());
+
+    foreach (const QString &file,
+             subdir.entryList(QDir::NoDotAndDotDot | QDir::Files)) {
+      subdir.remove(file);
+    }
+    workDir.rmdir(subdirInfo.fileName());
+  }
+
+  QString name(workDir.dirName());
+  workDir.cdUp();
+  workDir.rmdir(name);
 }
 
 void MainWindow::UserInfoChanged()
