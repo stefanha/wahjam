@@ -20,6 +20,7 @@
 #define _CHANNELTREEWIDGET_H
 
 #include <QTreeWidget>
+#include <QHash>
 
 class ChannelTreeWidget : public QTreeWidget
 {
@@ -28,15 +29,28 @@ class ChannelTreeWidget : public QTreeWidget
 public:
   ChannelTreeWidget(QWidget *parent = 0);
 
+  void addLocalChannel(int ch, const QString &name, bool mute, bool broadcast);
+
 signals:
   void MetronomeMuteChanged(bool mute);
   void MetronomeBoostChanged(bool boost);
+  void LocalChannelMuteChanged(int ch, bool mute);
+  void LocalChannelBoostChanged(int ch, bool boost);
+  void LocalChannelBroadcastChanged(int ch, bool broadcast);
+
+private slots:
+  void mapLocalChannelMuteChanged(bool mute);
+  void mapLocalChannelBoostChanged(bool mute);
+  void mapLocalChannelBroadcastChanged(bool mute);
 
 private:
   enum ChannelFlags {
     CF_BROADCAST = 0x1,
     CF_BOOST     = 0x2,
   };
+
+  /* Map mute, boost, and broadcast buttons to local channel index */
+  QHash<QObject*, int> localChannelHash;
 
   QTreeWidgetItem *addRootItem(const QString &text);
   QTreeWidgetItem *addChannelItem(QTreeWidgetItem *parent, const QString &text, int flags);

@@ -65,3 +65,47 @@ QTreeWidgetItem *ChannelTreeWidget::addChannelItem(QTreeWidgetItem *parent, cons
 
   return channel;
 }
+
+void ChannelTreeWidget::addLocalChannel(int ch, const QString &name, bool mute, bool broadcast)
+{
+  QTreeWidgetItem *local = topLevelItem(0);
+  QTreeWidgetItem *channel = addChannelItem(local, name, CF_BROADCAST | CF_BOOST);
+
+  QCheckBox *button = static_cast<QCheckBox*>(itemWidget(channel, 1));
+  button->setChecked(mute);
+  localChannelHash.insert(button, ch);
+  connect(button, SIGNAL(toggled(bool)),
+          this, SLOT(mapLocalChannelMuteChanged(bool)));
+
+  button = static_cast<QCheckBox*>(itemWidget(channel, 2));
+  button->setChecked(broadcast);
+  localChannelHash.insert(button, ch);
+  connect(button, SIGNAL(toggled(bool)),
+          this, SLOT(mapLocalChannelBroadcastChanged(bool)));
+
+  button = static_cast<QCheckBox*>(itemWidget(channel, 3));
+  localChannelHash.insert(button, ch);
+  connect(button, SIGNAL(toggled(bool)),
+          this, SLOT(mapLocalChannelBoostChanged(bool)));
+}
+
+void ChannelTreeWidget::mapLocalChannelMuteChanged(bool mute)
+{
+  int ch = localChannelHash.value(sender());
+
+  emit LocalChannelMuteChanged(ch, mute);
+}
+
+void ChannelTreeWidget::mapLocalChannelBoostChanged(bool boost)
+{
+  int ch = localChannelHash.value(sender());
+
+  emit LocalChannelBoostChanged(ch, boost);
+}
+
+void ChannelTreeWidget::mapLocalChannelBroadcastChanged(bool broadcast)
+{
+  int ch = localChannelHash.value(sender());
+
+  emit LocalChannelBroadcastChanged(ch, broadcast);
+}
