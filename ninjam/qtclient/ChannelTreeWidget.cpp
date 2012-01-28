@@ -109,3 +109,75 @@ void ChannelTreeWidget::mapLocalChannelBroadcastChanged(bool broadcast)
 
   emit LocalChannelBroadcastChanged(ch, broadcast);
 }
+
+void ChannelTreeWidget::mapRemoteChannelMuteChanged(bool mute)
+{
+  RemoteChannelInfo info = remoteChannelHash.value(sender());
+
+  emit RemoteChannelMuteChanged(info.useridx, info.channelidx, mute);
+}
+
+ChannelTreeWidget::RemoteChannelUpdater::RemoteChannelUpdater(ChannelTreeWidget *owner_)
+  : owner(owner_), toplevelidx(0), childidx(-1)
+{
+}
+
+void ChannelTreeWidget::RemoteChannelUpdater::addUser(int useridx_, const QString &name)
+{
+  prunePreviousUser();
+
+  QTreeWidgetItem *item = owner->topLevelItem(++toplevelidx);
+  if (item) {
+    item->setText(0, name);
+  } else {
+    owner->addRootItem(name);
+  }
+  childidx = -1;
+  useridx = useridx_;
+}
+
+void ChannelTreeWidget::RemoteChannelUpdater::addChannel(int channelidx, const QString &name, bool mute)
+{
+  QTreeWidgetItem *user = owner->topLevelItem(toplevelidx);
+  QTreeWidgetItem *channel = user->child(++childidx);
+  if (channel) {
+    channel->setText(0, name);
+  } else {
+    channel = owner->addChannelItem(user, name, 0);
+    connect(owner->itemWidget(channel, 1), SIGNAL(toggled(bool)),
+            owner, SLOT(mapRemoteChannelMuteChanged(bool)));
+  }
+
+  QCheckBox *muteButton = static_cast<QCheckBox*>(owner->itemWidget(channel, 1));
+  muteButton->setChecked(mute);
+
+  owner->remoteChannelHash.insert(muteButton, (RemoteChannelInfo){useridx, channelidx});
+}
+
+/* Delete unused channels from previous user */
+void ChannelTreeWidget::RemoteChannelUpdater::prunePreviousUser()
+{
+  if (toplevelidx > 0) {
+    QTreeWidgetItem *user = owner->topLevelItem(toplevelidx);
+    while (user->childCount() > childidx + 1) {
+      QTreeWidgetItem *channel = user->takeChild(user->childCount() - 1);
+      owner->remoteChannelHash.remove(owner->itemWidget(channel, 1));
+      delete channel;
+    }
+  }
+}
+
+void ChannelTreeWidget::RemoteChannelUpdater::commit()
+{
+  prunePreviousUser();
+
+  while (owner->topLevelItemCount() > toplevelidx + 1) {
+    QTreeWidgetItem *user = owner->takeTopLevelItem(owner->topLevelItemCount() - 1);
+    while (user->childCount() > 0) {
+      QTreeWidgetItem *channel = user->takeChild(user->childCount() - 1);
+      owner->remoteChannelHash.remove(owner->itemWidget(channel, 1));
+      delete channel;
+    }
+    delete user;
+  }
+}
