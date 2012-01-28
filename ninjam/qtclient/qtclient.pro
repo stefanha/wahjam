@@ -10,6 +10,9 @@ INCLUDEPATH += .
 QMAKE_CXXFLAGS += -Wno-write-strings
 LIBS += -lm -lasound -logg -lvorbis -lvorbisenc
 
+# Core ninjam/ code does not use wide characters
+win32:DEFINES -= UNICODE
+
 # Input
 HEADERS += MainWindow.h
 HEADERS += ConnectDialog.h
