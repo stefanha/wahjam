@@ -33,7 +33,7 @@ MainWindow *MainWindow::GetInstance()
 }
 
 MainWindow::MainWindow(QWidget *parent)
-  : QMainWindow(parent), audio(NULL), audioEnabled(false)
+  : QMainWindow(parent), audio(NULL)
 {
   /* Since the ninjam callbacks do not pass a void* opaque argument we rely on
    * a global variable.
@@ -112,7 +112,6 @@ MainWindow::MainWindow(QWidget *parent)
 
 MainWindow::~MainWindow()
 {
-  audioEnabled = false;
   delete audio;
   audio = NULL;
 
@@ -146,7 +145,6 @@ void MainWindow::Connect(const QString &host, const QString &user, const QString
   client.Connect(host.toAscii().data(),
                  user.toUtf8().data(),
                  pass.toUtf8().data());
-  audioEnabled = true;
 }
 
 /* Must be called with client mutex held or before client thread is started */
@@ -186,12 +184,6 @@ void MainWindow::UserInfoChanged()
 
 void MainWindow::OnSamples(float **inbuf, int innch, float **outbuf, int outnch, int len, int srate)
 {
-  if (!audioEnabled) {
-    int x;
-    // clear all output buffers
-    for (x = 0; x < outnch; x ++) memset(outbuf[x],0,sizeof(float)*len);
-    return;
-  }
   client.AudioProc(inbuf, innch, outbuf, outnch, len, srate);
 }
 
