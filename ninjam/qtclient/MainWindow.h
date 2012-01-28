@@ -21,6 +21,7 @@ public:
   ~MainWindow();
 
   void Connect(const QString &host, const QString &user, const QString &pass);
+  void Disconnect();
 
   static MainWindow *GetInstance();
 
