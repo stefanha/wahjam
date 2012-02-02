@@ -73,6 +73,8 @@ MainWindow::MainWindow(QWidget *parent)
           this, SLOT(LocalChannelBoostChanged(int, bool)));
   connect(channelTree, SIGNAL(LocalChannelBroadcastChanged(int, bool)),
           this, SLOT(LocalChannelBroadcastChanged(int, bool)));
+  connect(channelTree, SIGNAL(LocalChannelNameChanged(int, const QString&)),
+          this, SLOT(LocalChannelNameChanged(int, const QString&)));
   connect(channelTree, SIGNAL(RemoteChannelMuteChanged(int, int, bool)),
           this, SLOT(RemoteChannelMuteChanged(int, int, bool)));
 
@@ -359,6 +361,14 @@ void MainWindow::LocalChannelBroadcastChanged(int ch, bool broadcast)
 {
   clientMutex.lock();
   client.SetLocalChannelInfo(ch, NULL, false, 0, false, 0, true, broadcast);
+  clientMutex.unlock();
+}
+
+void MainWindow::LocalChannelNameChanged(int ch, const QString &name)
+{
+  clientMutex.lock();
+  client.SetLocalChannelInfo(ch, name.toUtf8().data(), false, 0, false, 0, false, false);
+  client.NotifyServerOfChannelChange();
   clientMutex.unlock();
 }
 

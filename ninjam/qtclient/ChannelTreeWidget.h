@@ -61,6 +61,7 @@ signals:
   void LocalChannelMuteChanged(int ch, bool mute);
   void LocalChannelBoostChanged(int ch, bool boost);
   void LocalChannelBroadcastChanged(int ch, bool broadcast);
+  void LocalChannelNameChanged(int ch, const QString &name);
   void RemoteChannelMuteChanged(int useridx, int channelidx, bool mute);
 
 private slots:

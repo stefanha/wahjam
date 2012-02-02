@@ -74,10 +74,15 @@ void ChannelTreeWidget::addLocalChannel(int ch, const QString &name, bool mute, 
   QTreeWidgetItem *local = topLevelItem(0);
   QTreeWidgetItem *channel = addChannelItem(local, name, CF_BROADCAST | CF_BOOST);
 
+  channel->setFlags(channel->flags() | Qt::ItemIsEditable);
   channel->setData(0, ItemTypeRole, ItemTypeLocalChannel);
   channel->setData(0, ChannelIndexRole, ch);
   channel->setCheckState(1, mute ? Qt::Checked : Qt::Unchecked);
+  channel->setData(1, Qt::DisplayRole, QVariant());
+  channel->setData(1, Qt::EditRole, QVariant());
   channel->setCheckState(2, broadcast ? Qt::Checked : Qt::Unchecked);
+  channel->setData(2, Qt::DisplayRole, QVariant());
+  channel->setData(2, Qt::EditRole, QVariant());
 }
 
 void ChannelTreeWidget::handleItemChanged(QTreeWidgetItem *item, int column)
@@ -99,7 +104,9 @@ void ChannelTreeWidget::handleItemChanged(QTreeWidgetItem *item, int column)
   case ItemTypeLocalChannel:
   {
     int ch = item->data(0, ChannelIndexRole).toInt(NULL);
-    if (column == 1) {
+    if (column == 0) {
+      emit LocalChannelNameChanged(ch, item->text(0));
+    } else if (column == 1) {
       emit LocalChannelMuteChanged(ch, state);
     } else if (column == 2) {
       emit LocalChannelBroadcastChanged(ch, state);
