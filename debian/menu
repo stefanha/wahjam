@@ -1,0 +1,6 @@
+?package(jammr-client):needs="X11" \
+	section="Applications/Sound" \
+	title="jammr" \
+	longtitle="jammr client: Play with musicians over the internet" \
+	command="/usr/bin/jammr" \
+	icon="/usr/share/icons/hicolor/48x48/apps/jammr.png"
