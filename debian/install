@@ -1,0 +1,3 @@
+debian/jammr.svg usr/share/icons/hicolor/scalable/apps
+debian/jammr.png usr/share/icons/hicolor/48x48/apps
+debian/jammr.desktop usr/share/applications
