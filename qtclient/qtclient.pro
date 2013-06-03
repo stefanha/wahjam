@@ -57,6 +57,8 @@ PKGCONFIG += vorbis vorbisenc portaudio-2.0
 # Code in common/ does not use wide characters
 win32:DEFINES -= UNICODE
 
+win32:RC_FILE = qtclient.rc
+
 mac:QMAKE_INFO_PLIST = Info.plist-$${TARGET}
 mac:ICON = $${TARGET}.icns
 
