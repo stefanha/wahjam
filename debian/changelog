@@ -1,3 +1,9 @@
+jammr-client (1.0.2) unstable; urgency=low
+
+  * Add sample rate and latency controls to the audio configuration dialog
+
+ -- Stefan Hajnoczi <stefanha@jammr.net>  Sun, 9 June 2013 15:03:00 +0000
+
 jammr-client (1.0.1) unstable; urgency=low
 
   * Auto-select sample rate (fixes sound when devices don't support 48 kHz)
