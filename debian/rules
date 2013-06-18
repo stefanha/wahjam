@@ -20,7 +20,8 @@ override_dh_auto_configure:
 			     VERSION=1.1.0 \
 			     APPNAME=jammr \
 			     ORGNAME=jammr \
-			     ORGDOMAIN=jammr.net
+			     ORGDOMAIN=jammr.net \
+			     USE_LIBPORTTIME=1
 
 %:
 	dh $@ 
