@@ -1,3 +1,16 @@
+jammr-client (1.1.0) unstable; urgency=low
+
+  * Add MIDI support for VST/VSTi plugins
+  * Add MIDI Beat Clock to sync tempo with external apps and devices
+  * Keep list of VST plugins across restart
+  * Add Mac VST support
+  * Add option to launch after Windows installer
+  * Add option to create desktop shortcut in Windows installer
+  * Drop administrator privileges in Windows installer
+  * Consolidate configuration dialogs into a Settings dialog with pages
+
+ -- Stefan Hajnoczi <stefanha@jammr.net>  Sun, 18 June 2013 08:55:00 +0000
+
 jammr-client (1.0.2) unstable; urgency=low
 
   * Add sample rate and latency controls to the audio configuration dialog
