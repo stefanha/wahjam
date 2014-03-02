@@ -17,7 +17,7 @@ override_dh_auto_configure:
 			     JAMMR_UPGRADE_URL="http://jammr.net/pricing.html" \
 			     JAMMR_UPDATE_URL="http://jammr.net/static/latest-linux.txt" \
 			     JAMMR_DOWNLOAD_URL="http://jammr.net/download.html" \
-			     VERSION=1.1.0 \
+			     VERSION=1.2.0 \
 			     APPNAME=jammr \
 			     ORGNAME=jammr \
 			     ORGDOMAIN=jammr.net \
