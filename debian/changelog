@@ -1,3 +1,11 @@
+jammr-client (1.2.0) unstable; urgency=low
+
+  * Better defaults in sound settings
+  * Added Help | Show log... menu item for troubleshooting
+  * Updated to Qt5 and PortAudio 20140130 for latest bug fixes
+
+ -- Stefan Hajnoczi <stefanha@jammr.net>  Sun, 2 March 2014 15:35:00 +0000
+
 jammr-client (1.1.0) unstable; urgency=low
 
   * Add MIDI support for VST/VSTi plugins
