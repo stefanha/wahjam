@@ -2,7 +2,7 @@ Source: jammr-client
 Section: sound
 Priority: extra
 Maintainer: Stefan Hajnoczi <stefanha@jammr.net>
-Build-Depends: debhelper (>= 8.0.0), libqt4-dev, libogg-dev, libvorbis-dev, portaudio19-dev
+Build-Depends: debhelper (>= 8.0.0), qtbase5-dev, libogg-dev, libvorbis-dev, portaudio19-dev, libportmidi-dev
 Standards-Version: 3.9.3
 Homepage: http://jammr.net/
 
