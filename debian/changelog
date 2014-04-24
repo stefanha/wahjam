@@ -1,3 +1,13 @@
+jammr-client (1.2.1) unstable; urgency=low
+
+  * Add effect plugin "Route..." dialog
+  * Add audio on/mix/bypass option to "Route..." dialog
+  * Add MIDI input on/off option to "Route..." dialog
+  * Fix VST plugin crashes due to incorrect buffer allocations
+  * Set focus on login dialog username text box if empty
+
+ -- Stefan Hajnoczi <stefanha@jammr.net>  Thu, 24 April 2014 17:38:00 +0000
+
 jammr-client (1.2.0) unstable; urgency=low
 
   * Better defaults in sound settings
