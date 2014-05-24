@@ -1,3 +1,11 @@
+jammr-client (1.2.2) unstable; urgency=low
+
+  * Support Unicode paths on Windows
+  * Fix crash on Linux due to memcpy() instead of memmove()
+  * Work around QTextCodec::codecForLocale() returning NULL on Windows
+
+ -- Stefan Hajnoczi <stefanha@jammr.net>  Sat, 24 May 2014 10:04:00 +0000
+
 jammr-client (1.2.1) unstable; urgency=low
 
   * Add effect plugin "Route..." dialog
