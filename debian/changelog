@@ -1,3 +1,11 @@
+jammr-client (1.2.3) unstable; urgency=low
+
+  * Open sound devices in stereo where possible
+  * Fix portmidi crash on older Macs due to unsupported CPU instructions
+  * Update Linux package dependencies for Ubuntu 14.04 LTS
+
+ -- Stefan Hajnoczi <stefanha@jammr.net>  Sat, 2 Aug 2014 10:04:00 +0000
+
 jammr-client (1.2.2) unstable; urgency=low
 
   * Support Unicode paths on Windows
