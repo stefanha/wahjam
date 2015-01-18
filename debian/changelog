@@ -1,3 +1,13 @@
+jammr-client (1.2.4) unstable; urgency=low
+
+  * Switch SSL for jammr REST API
+  * Add placeholder to chat textbox prompting user to enter chat message
+  * Use Mac native menu roles for Quit, About, etc
+  * Show full x.y.z version number in Mac Info.plist
+  * Fix sound device selection with Unicode device names
+
+ -- Stefan Hajnoczi <stefanha@jammr.net>  Sun, 18 Jan 2015 10:07:00 +0000
+
 jammr-client (1.2.3) unstable; urgency=low
 
   * Open sound devices in stereo where possible
