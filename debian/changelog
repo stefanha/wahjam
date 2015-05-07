@@ -1,3 +1,11 @@
+jammr-client (1.2.5) unstable; urgency=low
+
+  * Add support for surround sound playback devices
+  * Hide metronome bar when metronome is disabled
+  * Fix "Send" button on startup
+
+ -- Stefan Hajnoczi <stefanha@jammr.net>  Thu, 7 May 2015 08:07:00 +0000
+
 jammr-client (1.2.4) unstable; urgency=low
 
   * Switch SSL for jammr REST API
