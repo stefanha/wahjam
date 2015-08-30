@@ -1,3 +1,10 @@
+jammr-client (1.2.6) unstable; urgency=low
+
+  * Allow digits in jammr usernames in access control list
+  * Only enable Connect button when jam is selected
+
+ -- Stefan Hajnoczi <stefanha@jammr.net>  Sun, 30 Aug 2015 15:51:00 +0000
+
 jammr-client (1.2.5) unstable; urgency=low
 
   * Add support for surround sound playback devices
